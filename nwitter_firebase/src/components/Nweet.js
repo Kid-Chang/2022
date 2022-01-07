@@ -1,7 +1,10 @@
+import { refFromURL } from "firebase/database";
 import { deleteDoc, doc, getFirestore, updateDoc } from "firebase/firestore";
+import { deleteObject, getStorage, ref } from "firebase/storage";
 import { useState } from "react";
 
 const Nweet = ({ nweetObj, isOwner }) => {
+    console.log(nweetObj);
     const [editing, setEditing] = useState(false);
     const [newNweet, setNewNweet] = useState(nweetObj.text);
 
@@ -31,15 +34,23 @@ const Nweet = ({ nweetObj, isOwner }) => {
         toggleEditing(false);
     };
 
-    const onDeleteClick = () => {
+    const onDeleteClick = async () => {
         const ok = window.confirm(
             "Are you sure you wnat to delete this nweet?",
         );
         console.log(ok);
         if (ok) {
             //delete nweet
-            const NweetsDelDoc = doc(getFirestore(), `nweets/${nweetObj.id}`);
+            const NweetsDelDoc = await doc(
+                getFirestore(),
+                `nweets/${nweetObj.id}`,
+            );
             deleteDoc(NweetsDelDoc);
+
+            // attachmentURL이 있다면 삭제.
+            if (nweetObj.attachmentURL) {
+                await deleteObject(ref(getStorage(), nweetObj.attachmentURL));
+            }
         }
     };
     return (
@@ -61,6 +72,14 @@ const Nweet = ({ nweetObj, isOwner }) => {
             ) : (
                 <>
                     <h4>{nweetObj.text}</h4>
+                    {nweetObj.attachmentURL && (
+                        <img
+                            src={nweetObj.attachmentURL}
+                            alt=""
+                            width="50px"
+                            height="50px"
+                        />
+                    )}
                     {isOwner && (
                         <>
                             <button onClick={onDeleteClick}>

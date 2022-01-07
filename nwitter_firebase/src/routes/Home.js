@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
     getFirestore,
     addDoc,
@@ -7,12 +7,30 @@ import {
     query,
     orderBy,
 } from "firebase/firestore";
+
 import Nweet from "../components/Nweet";
+import NweetFactory from "../components/NweetFactory";
 
 const Home = ({ userObj }) => {
+    useEffect(() => {
+        onSnapshot(
+            query(collection(getFirestore(), "nweets"), orderBy("createdAt")),
+            (snapshot) => {
+                console.log(snapshot.docs);
+                const nweetArray = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                    //...doc.data() 하면 doc.data()의 데이터 전체를 뿌려(...)준다.
+                }));
+                // console.log("arry:");
+                // console.log(nweetArray);
+                setNweets(nweetArray);
+                console.log("its work");
+            },
+        );
+    }, []);
     // const db = getFirestore();
-    console.log(userObj);
-    const [nweet, setNweet] = useState("");
+    // console.log(userObj);
     const [nweets, setNweets] = useState([]);
 
     // const getNweets = async () => {
@@ -28,56 +46,10 @@ const Home = ({ userObj }) => {
     //     });
     // };  --> 올드한 방식.
 
-    useEffect(() => {
-        onSnapshot(
-            query(collection(getFirestore(), "nweets"), orderBy("createdAt")),
-            (snapshot) => {
-                // console.log(snapshot.docs);
-                const nweetArray = snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                    //...doc.data() 하면 doc.data()의 데이터 전체를 뿌려(...)준다.
-                }));
-                console.log("arry:");
-                console.log(nweetArray);
-                setNweets(nweetArray);
-            },
-        );
-    }, []);
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        const docRef = await addDoc(collection(getFirestore(), "nweets"), {
-            text: nweet,
-            createdAt: Date.now(),
-            creatorId: userObj.uid,
-        });
-        console.log("Document written with ID: ", docRef.id);
-        setNweet("");
-    };
-
-    const onChange = (e) => {
-        const {
-            target: { value },
-        } = e;
-        setNweet(value);
-        // console.log(value);
-    };
-
-    // console.log(nweets);
-
     return (
         <div>
             HOme
-            <form onSubmit={onSubmit}>
-                <input
-                    type="text"
-                    placeholder="What's on your mind?"
-                    maxLength="120"
-                    value={nweet}
-                    onChange={onChange}
-                />
-                <input type="submit" value="Nweet" />
-            </form>
+            <NweetFactory userObj={userObj} />
             {nweets.map((nweet) => (
                 <Nweet
                     key={nweet.id}
