@@ -33,7 +33,7 @@ const NweetFactory = ({ userObj }) => {
             );
             attachmentURL = await getDownloadURL(response.ref);
         }
-
+        console.log(attachmentURL);
         const nweetObj = {
             text: nweet,
             createdAt: Date.now(),
@@ -88,6 +88,8 @@ const NweetFactory = ({ userObj }) => {
                 currentTarget: { result },
             } = finishedEvent;
             setActtachment(result);
+            console.log("result:");
+            console.log(result);
         };
         reader.readAsDataURL(theFile);
     };
