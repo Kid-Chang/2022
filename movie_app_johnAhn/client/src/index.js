@@ -4,7 +4,8 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import LandingPage from "./components/views/Landingpage/LandingPage";
-import "antd/dist/antd.css";
+// import "antd/dist/antd.css"; // it has an err.
+import "antd/dist/antd.min.css";
 import { BrowserRouter } from "react-router-dom";
 
 import { Provider } from "react-redux";
