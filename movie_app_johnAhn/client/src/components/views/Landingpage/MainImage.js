@@ -1,7 +1,7 @@
 import React from "react";
 
 const MainImage = ({ image, MainMovie }) => {
-    console.log(image);
+    // console.log(image);
     return (
         <div>
             <div
@@ -9,7 +9,7 @@ const MainImage = ({ image, MainMovie }) => {
                     background: `url(${image})`,
                     height: "500px",
                     backgroundSize: "100%, cover",
-                    backgroundPosition: "center,center",
+                    backgroundPosition: "center, center",
                     width: "100%",
                     position: "relative",
                 }}

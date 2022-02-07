@@ -33,6 +33,7 @@ function LoginPage() {
 
         dispatch(loginUser(body)).then((res) => {
             if (res.payload.loginSuccess) {
+                window.localStorage.setItem("userId", res.payload.userId);
                 navigate("/");
             } else {
                 alert("err");

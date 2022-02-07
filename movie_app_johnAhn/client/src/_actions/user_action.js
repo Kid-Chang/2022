@@ -6,8 +6,8 @@ export function loginUser(dataToSubmit) {
         return res.data;
     });
 
-    console.log("user_action: Login");
-    console.log(req);
+    // console.log("user_action: Login");
+    // console.log(req);
     return {
         type: LOGIN_USER,
         payload: req,
@@ -19,8 +19,8 @@ export function registerUser(dataToSubmit) {
         return res.data;
     });
 
-    console.log("user_action: Register");
-    console.log(req);
+    // console.log("user_action: Register");
+    // console.log(req);
     return {
         type: REGISTER_USER,
         payload: req,
@@ -32,8 +32,8 @@ export function auth() {
         return res.data;
     });
 
-    console.log("user_action: auth");
-    console.log(req);
+    // console.log("user_action: auth");
+    // console.log(req);
     return {
         type: AUTH_USER,
         payload: req,
