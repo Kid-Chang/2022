@@ -14,3 +14,18 @@ readme는 한글로,,, 주석은 영어로,,,
 antd를 이용해서 grid card 만들기 까지.
 
 ## 0207
+
+Schema 내부에
+
+```
+ userForm: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
+```
+
+이런식으로 작성하면 USER schema의 ObjectId도 담아서 보관할 수 있다.
+
+## 0208
+
+antd의 Popover를 이용해서 호버 구현 및 favorite list에서도 삭제가 가능하도록.
