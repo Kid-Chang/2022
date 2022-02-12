@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Typography, Button, Form, message, Input, Icon } from "antd";
+import { Typography, Button, Form, message, Input, Icon, Alert } from "antd";
 import Dropzone from "react-dropzone";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -20,10 +22,17 @@ const CategoryOptions = [
 ];
 
 const VideoUploadPage = () => {
+    const navigate = useNavigate();
+    const user = useSelector((state) => state.user);
+
     const [VideoTitle, setVideoTitle] = useState("");
     const [Description, setDescription] = useState("");
     const [Private, setPrivate] = useState(0);
     const [Category, setCategory] = useState("File & Animation");
+
+    const [FilePath, setFilePath] = useState("");
+    const [Duration, setDuration] = useState("");
+    const [ThumbnailPath, setThumbnailPath] = useState("");
 
     const onChange = (e) => {
         // console.log(e.currentTarget.name);
@@ -47,12 +56,59 @@ const VideoUploadPage = () => {
             header: { "content-type": "multipart/form-data" },
         };
         formData.append("file", files[0]);
-
+        console.log("its work");
         axios.post("/api/video/uploadfiles", formData, config).then((res) => {
             if (res.data.success) {
                 console.log(res.data);
+                let variable = {
+                    filePath: res.data.filePath,
+                    fileName: res.data.fileName,
+                };
+                setFilePath(res.data.filePath);
+
+                //gerenate thumbnail with this filepath.
+
+                axios.post("/api/video/thumbnail", variable).then((res) => {
+                    if (res.data.success) {
+                        console.log(res.data);
+
+                        setDuration(res.data.fileDuration);
+                        setThumbnailPath(res.data.filePath);
+                    } else {
+                        alert("Failed to make the thumbnails");
+                    }
+                });
             } else {
-                alert(res.data.err.msg);
+                alert("failed to save the video in server");
+            }
+        });
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        console.log(user);
+        const variables = {
+            writer: user.userData._id,
+            title: VideoTitle,
+            description: Description,
+            privacy: Private,
+            filePath: FilePath,
+            Category: Category,
+            duration: Duration,
+            thumbnail: ThumbnailPath,
+        };
+        console.log(variables);
+
+        axios.post("/api/video/uploadVideo", variables).then((res) => {
+            if (res.data.success) {
+                console.log("success");
+                message.success("성공적으로 업로드 했습니다.");
+                setTimeout(() => {
+                    navigate("/");
+                }, 3000);
+            } else {
+                alert("비디오 업로드 실패.");
+                console.log(res.data.err);
             }
         });
     };
@@ -62,7 +118,7 @@ const VideoUploadPage = () => {
             <div style={{ textAlign: "center", marginBottom: "2rem" }}>
                 <Title level={2}>Upload Video</Title>
             </div>
-            <Form>
+            <Form onSubmit={onSubmit}>
                 <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                 >
@@ -98,7 +154,15 @@ const VideoUploadPage = () => {
                         )}
                     </Dropzone>
                     {/* Thumbnail */}
-                    <img />
+
+                    {ThumbnailPath && (
+                        <div>
+                            <img
+                                src={`http://localhost:4001/${ThumbnailPath}`}
+                                alt="thumbnail"
+                            />
+                        </div>
+                    )}
                 </div>
 
                 <br />
@@ -138,7 +202,7 @@ const VideoUploadPage = () => {
                 </select>
                 <br />
                 <br />
-                <Button type="primary" size="large" onClick>
+                <Button type="primary" size="large" onClick={onSubmit}>
                     Submit
                 </Button>
             </Form>
