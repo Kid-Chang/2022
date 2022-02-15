@@ -36,7 +36,7 @@ export default function Auth(SpecificComponent, option, adminRoute = null) {
                             // ex. wanted site, resume tab.
                             // login user only see their own content.
                             // but, unlogin user can see introduction page.
-                            navigate("/vivvi");
+                            navigate("/");
                         }
                     }
                 }

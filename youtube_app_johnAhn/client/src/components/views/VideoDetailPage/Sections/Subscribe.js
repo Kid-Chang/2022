@@ -19,10 +19,10 @@ const Subscribe = (props) => {
             }
         });
 
-        axios.post("/api/subscribe/subscribed").then((res) => {
-            if (res.data.success) {
-                // console.log(res.data);
-                setSubscribed(res.data);
+        axios.post("/api/subscribe/subscribed", variables).then((response) => {
+            if (response.data.success) {
+                console.log(response.data);
+                setSubscribed(response.data.subscribed);
             } else {
                 alert("구독했는지 확인할 수 없습니다.");
             }
@@ -34,11 +34,13 @@ const Subscribe = (props) => {
             userTo: userTo,
             userFrom: userFrom,
         };
+
         if (Subscribed) {
             // already subscribe
             axios.post("/api/subscribe/unsubscribe", variables).then((res) => {
                 if (res.data.success) {
-                    //
+                    setSubscribeNumber(SubscribeNumber - 1);
+                    setSubscribed(!Subscribed);
                 } else {
                     alert("구독 취소를 실패했습니다.");
                 }
@@ -47,7 +49,8 @@ const Subscribe = (props) => {
             // didn't subscribe
             axios.post("/api/subscribe/subscribe", variables).then((res) => {
                 if (res.data.success) {
-                    //
+                    setSubscribeNumber(SubscribeNumber + 1);
+                    setSubscribed(!Subscribed);
                 } else {
                     alert("구독을 실패했습니다.");
                 }

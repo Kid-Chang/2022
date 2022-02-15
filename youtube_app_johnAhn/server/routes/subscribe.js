@@ -7,11 +7,11 @@ const { Subscriber } = require("../models/Subscriber");
 //=================================
 
 router.post("/subscribeNumber", (req, res) => {
-    Subscriber.find({ userTo: req.body.userTo }).exec((err, userTo) => {
+    Subscriber.find({ userTo: req.body.userTo }).exec((err, subscribe) => {
         if (err) return res.status(400).send(err);
         return res.status(200).json({
             success: true,
-            subscriberNumber: this.subscribe.length,
+            subscriberNumber: subscribe.length,
         });
     });
 });
@@ -20,11 +20,11 @@ router.post("/subscribed", (req, res) => {
     Subscriber.find({
         userTo: req.body.userTo,
         userFrom: req.body.userFrom,
-    }).exec((err, userTo) => {
+    }).exec((err, subscribe) => {
         if (err) return res.status(400).send(err);
         return res.status(200).json({
             success: true,
-            subscribed: this.subscribe.length > 0 ? true : false,
+            subscribed: subscribe.length > 0 ? true : false,
         });
     });
 });

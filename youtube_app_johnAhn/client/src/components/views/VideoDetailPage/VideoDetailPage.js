@@ -25,11 +25,14 @@ const VideoDetailPage = () => {
             <Row gutter={[16, 16]}>
                 <Col lg={18} xs={24}>
                     <div style={{ width: "100%", padding: "3rem 4rem" }}>
-                        <video
-                            style={{ width: "100%" }}
-                            src={`http://localhost:4001/${VideoDetail.filePath}`}
-                            controls
-                        />
+                        {VideoDetail.filePath && (
+                            <video
+                                style={{ width: "100%" }}
+                                src={`http://localhost:4001/${VideoDetail.filePath}`}
+                                controls
+                            />
+                        )}
+
                         {VideoDetail.writer && (
                             <List.Item
                                 actions={[
