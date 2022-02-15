@@ -35,14 +35,16 @@ function RightMenu(props) {
         );
     } else {
         return (
-            <Menu mode={"inline"}>
-                <Menu.Item key="upload">
-                    <a href="/video/upload">Upload</a>
-                </Menu.Item>
-                <Menu.Item key="logout">
-                    <a onClick={logoutHandler}>Logout</a>
-                </Menu.Item>
-            </Menu>
+            <div>
+                <Menu mode="inline">
+                    <Menu.Item key="upload">
+                        <a href="/video/upload">Upload</a>
+                    </Menu.Item>
+                    <Menu.Item key="logout">
+                        <a onClick={logoutHandler}>Logout</a>
+                    </Menu.Item>
+                </Menu>
+            </div>
         );
     }
 }

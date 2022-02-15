@@ -31,12 +31,12 @@ export default function Auth(SpecificComponent, option, adminRoute = null) {
                         // second option is this, "user hasn't admin authority".
                         navigate("/");
                     } else {
-                        if (!option) {
+                        if (option === false) {
                             // if option is false, login user can't enter this page.
                             // ex. wanted site, resume tab.
                             // login user only see their own content.
                             // but, unlogin user can see introduction page.
-                            navigate("/");
+                            navigate("/vivvi");
                         }
                     }
                 }

@@ -24,3 +24,11 @@ https://wayhome25.github.io/nodejs/2017/02/18/nodejs-08-express-static/ 참고.
 video 라우터에서 `.find().populate("writer")`라는 문법을 사용해서 좀더 찾아봤다.
 `.find()`는 해당되는 부분 전체를 찾는다. 이때, Video 스키마는 writer가 Schema.Types.ObjectId를 사용해서 User스키마 값과 연결되어있다.
 여기서 그냥 `.find()`를 사용한다면, writer에 User스키마의 `_id` 값만 출력되지만 `populate("writer")`라고 해주면 writer에 연결된 User스키마의 정보들도 같이 출력된다. 자세한건 아래 블로그 참고 `https://blog.naver.com/PostView.naver?blogId=devlink&logNo=222483797663`
+
+# 0214
+
+이슈: SideVideo에서 Link 태그가 작동하지 않는다.
+
+# 0215
+
+구독 기능 구현.

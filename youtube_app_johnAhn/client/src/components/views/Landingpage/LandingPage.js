@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, Avatar, Col, Typography, Row } from "antd";
 import axios from "axios";
 import moment from "moment";
@@ -28,7 +28,7 @@ function LandingPage() {
         return (
             <Col lg={6} md={8} xs={24} key={idx}>
                 <div style={{ position: "relative" }}>
-                    <a href={`/video/${video._id}`}>
+                    <Link to={`/video/${video._id}`}>
                         <img
                             style={{ width: "100%" }}
                             alt="thumbnail"
@@ -56,7 +56,7 @@ function LandingPage() {
                                 {minutes} : {seconds}
                             </span>
                         </div>
-                    </a>
+                    </Link>
                 </div>
                 <br />
                 <Meta

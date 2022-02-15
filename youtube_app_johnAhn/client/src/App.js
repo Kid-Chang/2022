@@ -6,12 +6,14 @@ import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/views/NavBar/NavBar";
 import Auth from "./components/hoc/auth";
 import VideoUploadPage from "./components/views/VideoUploadPage/VideoUploadPage";
+import VideoDetailPage from "./components/views/VideoDetailPage/VideoDetailPage";
 
 function App() {
     const HocLandingPage = Auth(LandingPage, null);
     const HocLoginPage = Auth(LoginPage, false);
     const HocRegisterPage = Auth(RegisterPage, false);
     const HocVideoUploadPage = Auth(VideoUploadPage, true);
+    const HocVideoDetailPage = Auth(VideoDetailPage, null);
 
     return (
         <>
@@ -22,6 +24,10 @@ function App() {
                 <Route path="/login" element={<HocLoginPage />} />
                 <Route path="/register" element={<HocRegisterPage />} />
                 <Route path="/video/upload" element={<HocVideoUploadPage />} />
+                <Route
+                    path="/video/:videoId"
+                    element={<HocVideoDetailPage />}
+                />
             </Routes>
         </>
     );
