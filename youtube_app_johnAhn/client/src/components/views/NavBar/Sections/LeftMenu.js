@@ -1,16 +1,20 @@
-import { Menu } from "antd";
 import React from "react";
-// import { Menu } from "antd";
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
+import { Menu } from "antd";
 
 function LeftMenu(props) {
     return (
-        <Menu mode={"inline"}>
-            <Menu.Item key="mail">
-                <a href="/">Home</a>
-            </Menu.Item>
-        </Menu>
+        <div style={{ display: "flex" }}>
+            <Menu mode={"inline"}>
+                <Menu.Item key="mail">
+                    <a href="/">Home</a>
+                </Menu.Item>
+            </Menu>
+            <Menu mode={"inline"}>
+                <Menu.Item key="subscription">
+                    <a href="/subscription">subscription</a>
+                </Menu.Item>
+            </Menu>
+        </div>
     );
 }
 

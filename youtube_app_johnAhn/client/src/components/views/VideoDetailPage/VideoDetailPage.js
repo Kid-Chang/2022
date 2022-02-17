@@ -20,6 +20,8 @@ const VideoDetailPage = () => {
             }
         });
     }, []);
+    let subscribeButton;
+
     return (
         <div>
             <Row gutter={[16, 16]}>

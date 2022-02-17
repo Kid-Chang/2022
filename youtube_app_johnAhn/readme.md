@@ -32,3 +32,9 @@ video 라우터에서 `.find().populate("writer")`라는 문법을 사용해서 
 # 0215
 
 구독 및 구독 취소 기능 구현.
+
+mongoDB에서 `Model.find({writer : {{ $in: subscriberdUser } })` 이런식으로 작성하면 `{$in : [list] }` 에서 list를 spread하면서 찾아준다.
+
+# 0217
+
+댓글 기능 구현중

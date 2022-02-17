@@ -24,22 +24,28 @@ function RightMenu(props) {
 
     if (user.userData && !user.userData.isAuth) {
         return (
-            <Menu mode={"inline"}>
-                <Menu.Item key="mail">
-                    <a href="/login">Signin</a>
-                </Menu.Item>
-                <Menu.Item key="app">
-                    <a href="/register">Signup</a>
-                </Menu.Item>
-            </Menu>
+            <div style={{ display: "flex" }}>
+                <Menu mode={"inline"}>
+                    <Menu.Item key="mail">
+                        <a href="/login">Signin</a>
+                    </Menu.Item>
+                </Menu>
+                <Menu mode={"inline"}>
+                    <Menu.Item key="app">
+                        <a href="/register">Signup</a>
+                    </Menu.Item>
+                </Menu>
+            </div>
         );
     } else {
         return (
-            <div>
+            <div style={{ display: "flex" }}>
                 <Menu mode="inline">
                     <Menu.Item key="upload">
                         <a href="/video/upload">Upload</a>
                     </Menu.Item>
+                </Menu>
+                <Menu mode="inline">
                     <Menu.Item key="logout">
                         <a onClick={logoutHandler}>Logout</a>
                     </Menu.Item>

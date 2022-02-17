@@ -7,6 +7,7 @@ import NavBar from "./components/views/NavBar/NavBar";
 import Auth from "./components/hoc/auth";
 import VideoUploadPage from "./components/views/VideoUploadPage/VideoUploadPage";
 import VideoDetailPage from "./components/views/VideoDetailPage/VideoDetailPage";
+import SubscriptionPage from "./components/views/Subscription/SubscriptionPage";
 
 function App() {
     const HocLandingPage = Auth(LandingPage, null);
@@ -14,6 +15,7 @@ function App() {
     const HocRegisterPage = Auth(RegisterPage, false);
     const HocVideoUploadPage = Auth(VideoUploadPage, true);
     const HocVideoDetailPage = Auth(VideoDetailPage, null);
+    const HocSubscriptionPage = Auth(SubscriptionPage, null);
 
     return (
         <>
@@ -28,6 +30,7 @@ function App() {
                     path="/video/:videoId"
                     element={<HocVideoDetailPage />}
                 />
+                <Route path="/subscription" element={<HocSubscriptionPage />} />
             </Routes>
         </>
     );

@@ -59,22 +59,26 @@ const Subscribe = (props) => {
     };
 
     return (
-        <div>
-            <button
-                onClick={onSubscribe}
-                style={{
-                    backgroundColor: `${Subscribed ? "#AAAAAA" : "#CC0000"}`,
-                    borderRadius: "4px",
-                    color: "white",
-                    padding: "10px 16px",
-                    fontWeight: "500",
-                    fontSize: "1rem",
-                    textTransform: "uppercase",
-                }}
-            >
-                {SubscribeNumber} {Subscribed ? "Subscribed" : "subscribe"}
-            </button>
-        </div>
+        <>
+            <div>
+                <button
+                    onClick={onSubscribe}
+                    style={{
+                        backgroundColor: `${
+                            Subscribed ? "#AAAAAA" : "#CC0000"
+                        }`,
+                        borderRadius: "4px",
+                        color: "white",
+                        padding: "10px 16px",
+                        fontWeight: "500",
+                        fontSize: "1rem",
+                        textTransform: "uppercase",
+                    }}
+                >
+                    {SubscribeNumber} {Subscribed ? "Subscribed" : "subscribe"}
+                </button>
+            </div>
+        </>
     );
 };
 

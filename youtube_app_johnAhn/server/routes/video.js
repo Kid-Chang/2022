@@ -5,6 +5,7 @@ const multer = require("multer");
 var ffmpeg = require("fluent-ffmpeg");
 
 const { Video } = require("../models/Video");
+const { Subscriber } = require("../models/Subscriber");
 
 const { auth } = require("../middleware/auth");
 
@@ -36,7 +37,6 @@ const upload = multer({ storage: storage, fileFilter: fileFilter }).single(
 //=================================
 
 router.post("/uploadfiles", (req, res) => {
-    const reque = req;
     upload(req, res, (err) => {
         if (err) {
             return res.json({ success: false, err });
@@ -114,6 +114,31 @@ router.post("/getVideoDetail", (req, res) => {
             if (err) return res.status(400).send(err);
             res.status(200).json({ success: true, videoDetail });
         });
+});
+
+router.post("/getSubscriptionVideos", (req, res) => {
+    // Using my id, find people that I subscribe to.
+    let subscriberdUser = [];
+    Subscriber.find({ userFrom: req.body.userFrom }).exec(
+        (err, subscriberInfo) => {
+            if (err) return res.status(400).send(err);
+
+            let subscriberdUser = [];
+
+            subscriberInfo.map((subscriber, idx) => {
+                subscriberdUser.push(subscriber.userTo);
+            });
+
+            // get people's video that I found.
+            // ` {$in: [list]} ` is spread list contents and find.
+            Video.find({ writer: { $in: subscriberdUser } })
+                .populate("writer")
+                .exec((err, videos) => {
+                    if (err) return res.status(400).send(err);
+                    res.status(200).json({ success: true, videos });
+                });
+        },
+    );
 });
 
 module.exports = router;
