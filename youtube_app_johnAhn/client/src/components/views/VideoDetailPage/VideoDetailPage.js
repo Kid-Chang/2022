@@ -4,9 +4,11 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import SideVideo from "./Sections/SideVideo";
 import Subscribe from "./Sections/Subscribe";
+import Comment from "./Sections/Comment";
 const VideoDetailPage = () => {
     const { videoId } = useParams();
     const [VideoDetail, setVideoDetail] = useState([]);
+    const [Comments, setComments] = useState("");
 
     useEffect(() => {
         const variables = { videoId: videoId };
@@ -20,7 +22,6 @@ const VideoDetailPage = () => {
             }
         });
     }, []);
-    let subscribeButton;
 
     return (
         <div>
@@ -36,26 +37,29 @@ const VideoDetailPage = () => {
                         )}
 
                         {VideoDetail.writer && (
-                            <List.Item
-                                actions={[
-                                    <Subscribe
-                                        userTo={VideoDetail.writer._id}
-                                        userFrom={localStorage.getItem(
-                                            "userId",
-                                        )}
-                                    />,
-                                ]}
-                            >
-                                <List.Item.Meta
-                                    avatar={
-                                        <Avatar
-                                            src={VideoDetail.writer.image}
-                                        />
-                                    }
-                                    title={VideoDetail.writer.name}
-                                    description={VideoDetail.description}
-                                />
-                            </List.Item>
+                            <>
+                                <List.Item
+                                    actions={[
+                                        <Subscribe
+                                            userTo={VideoDetail.writer._id}
+                                            userFrom={localStorage.getItem(
+                                                "userId",
+                                            )}
+                                        />,
+                                    ]}
+                                >
+                                    <List.Item.Meta
+                                        avatar={
+                                            <Avatar
+                                                src={VideoDetail.writer.image}
+                                            />
+                                        }
+                                        title={VideoDetail.writer.name}
+                                        description={VideoDetail.description}
+                                    />
+                                </List.Item>
+                                <Comment />
+                            </>
                         )}
                     </div>
                 </Col>
