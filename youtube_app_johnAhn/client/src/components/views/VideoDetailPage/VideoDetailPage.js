@@ -8,7 +8,7 @@ import Comment from "./Sections/Comment";
 const VideoDetailPage = () => {
     const { videoId } = useParams();
     const [VideoDetail, setVideoDetail] = useState([]);
-    const [Comments, setComments] = useState("");
+    const [Comments, setComments] = useState([]);
 
     useEffect(() => {
         const variables = { videoId: videoId };
@@ -21,7 +21,22 @@ const VideoDetailPage = () => {
                 alert("디테일정보 가져오기 실패");
             }
         });
+
+        axios.post("/api/comment/getComments", variables).then((res) => {
+            if (res.data.success) {
+                console.log("getCOmments");
+                console.log(res.data.comments);
+                setComments(res.data.comments);
+            } else {
+                window.alert("전체 코멘트 가져오기 실패");
+                console.log("전체 코멘트 가져오기 실패");
+            }
+        });
     }, []);
+
+    const refreshFunc = (newComment) => {
+        setComments(Comments.concat(newComment));
+    };
 
     return (
         <div>
@@ -58,7 +73,10 @@ const VideoDetailPage = () => {
                                         description={VideoDetail.description}
                                     />
                                 </List.Item>
-                                <Comment />
+                                <Comment
+                                    refreshFunc={refreshFunc}
+                                    commentLists={Comments}
+                                />
                             </>
                         )}
                     </div>

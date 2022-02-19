@@ -37,4 +37,4 @@ mongoDB에서 `Model.find({writer : {{ $in: subscriberdUser } })` 이런식으�
 
 # 0218
 
-댓글 기능 구현중
+댓글 기능 완성. depth는 2까지만.

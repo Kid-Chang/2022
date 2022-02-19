@@ -1,8 +1,10 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-const Comment = () => {
+import ReplyComment from "./ReplyComment";
+import SingleComment from "./SingleComment";
+const Comment = ({ commentLists, refreshFunc }) => {
     const { videoId } = useParams();
 
     const [CommentValue, setCommentValue] = useState("");
@@ -13,6 +15,10 @@ const Comment = () => {
     };
     const onSubmit = (e) => {
         e.preventDefault();
+        if (CommentValue === "") {
+            return alert("입력해주세요!");
+        }
+
         const variables = {
             content: CommentValue,
             writer: user.userData._id,
@@ -22,6 +28,8 @@ const Comment = () => {
         axios.post("/api/comment/saveComment", variables).then((res) => {
             if (res.data.success) {
                 console.log(res.data);
+                setCommentValue("");
+                refreshFunc(res.data.result);
             } else {
                 console.log(res);
                 alert("코멘트 저장 실패");
@@ -35,6 +43,29 @@ const Comment = () => {
             <p>Replies</p>
             <hr />
             {/* Comment Lists */}
+
+            {commentLists &&
+                commentLists.map((comment, idx) => {
+                    return (
+                        <React.Fragment key={idx}>
+                            {!comment.responseTo && (
+                                <>
+                                    <SingleComment
+                                        refreshFunc={refreshFunc}
+                                        postId={videoId}
+                                        comment={comment}
+                                    />
+                                    <ReplyComment
+                                        refreshFunc={refreshFunc}
+                                        commentLists={commentLists}
+                                        parentCommentId={comment._id}
+                                        postId={videoId}
+                                    />
+                                </>
+                            )}
+                        </React.Fragment>
+                    );
+                })}
 
             {/* Root Comment Form */}
 

@@ -7,8 +7,8 @@ const { Comment } = require("../models/Comment");
 //=================================
 
 router.post("/saveComment", (req, res) => {
-    const commnet = new Comment(req.body);
-    commnet.save((err, comment) => {
+    const comment = new Comment(req.body);
+    comment.save((err, comment) => {
         if (err) return res.json({ success: false, err });
 
         // Can't use  populate method in save method.
@@ -21,6 +21,15 @@ router.post("/saveComment", (req, res) => {
                 res.status(200).json({ success: true, result });
             });
     });
+});
+
+router.post("/getComments", (req, res) => {
+    Comment.find({ postId: req.body.videoId })
+        .populate("writer")
+        .exec((err, comments) => {
+            if (err) return res.status(400).json({ success: false });
+            return res.status(200).json({ success: true, comments });
+        });
 });
 
 module.exports = router;
