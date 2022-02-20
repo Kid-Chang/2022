@@ -1,0 +1,16 @@
+/* footer의 a 태그 효과 삭제 */
+a{
+    /* color:gray; */
+    text-decoration-line: none;
+}
+
+/* 화면 전체에 좌우 overflow 없애기. */
+
+html{
+    overflow-x: hidden;
+}
+
+/* a 태그 호버시 색상 파랑색으로 변경되길래 설정 */
+a:hover{
+color:black
+}
