@@ -38,3 +38,10 @@ mongoDB에서 `Model.find({writer : {{ $in: subscriberdUser } })` 이런식으�
 # 0218
 
 댓글 기능 완성. depth는 2까지만.
+
+antd Icon err : https://shinye0213.tistory.com/317
+--> 사용법이 변경되어서 원래는 `<Icon type=""> </Icon>` 이었지만, 업데이트 이후 import 단에서 사용할 아이콘을 호출.
+
+# 0220
+
+좋아요 싫어요 완성.

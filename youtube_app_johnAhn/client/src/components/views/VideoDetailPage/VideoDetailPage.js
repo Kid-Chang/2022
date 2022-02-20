@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import SideVideo from "./Sections/SideVideo";
 import Subscribe from "./Sections/Subscribe";
 import Comment from "./Sections/Comment";
+import LikeDislike from "./Sections/LikeDislike";
 const VideoDetailPage = () => {
     const { videoId } = useParams();
     const [VideoDetail, setVideoDetail] = useState([]);
@@ -55,6 +56,13 @@ const VideoDetailPage = () => {
                             <>
                                 <List.Item
                                     actions={[
+                                        <LikeDislike
+                                            video
+                                            userId={localStorage.getItem(
+                                                "userId",
+                                            )}
+                                            videoId={videoId}
+                                        />,
                                         <Subscribe
                                             userTo={VideoDetail.writer._id}
                                             userFrom={localStorage.getItem(
