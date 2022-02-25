@@ -19,6 +19,9 @@ $ cd ios
 $ pod install
 ```
 
+<br>
+<br>
+<br>
 ## 리액트 네이티브를 다루는 기술
 
 # 0223
@@ -102,7 +105,8 @@ resizeMode는 총 5가지 값으로 설정할 수 있습니다.
 
 `onChangeText`는 사용자가 내용을 수정할 때마다 호출되는 콜백 함수이며, 이 콜백 함수가 호출될 때는 현재 TextInput의 내용을 인자로 넣어서 호출됩니다.
 
-**TextInput**
+## TextInput
+
 `TextInput`태그에 padding을 지정해줌으로서 실제 TextInput Box에서 벗어난 범위에 터치해도 인식이 되도록 설정해준다.
 
 `onSubmitEditing`은 Enter를 눌렀을 때 호출되는 함수이다.
@@ -111,7 +115,8 @@ resizeMode는 총 5가지 값으로 설정할 수 있습니다.
 "done"으로 설정하면 완료 라고 표시된다.
 더 다양한 타입은 https://reactnative.dev/docs/textinput 참고.
 
-**버튼**
+## 버튼
+
 터치할 수 있는 영역을 다음 컴포넌트 중 하나로 감싸면 됩니다.
 
 ```
@@ -125,7 +130,8 @@ resizeMode는 총 5가지 값으로 설정할 수 있습니다.
 • TouchableWithoutFeedback: 터치했을 때 아무 효과도 적용하지 않습니다.
 ```
 
-**FlatList**
+## FlatList
+
 `data`, `render`, `keyExtractor` 필수.
 https://velog.io/@djaxornwkd12/React-Native-FlatList%EC%97%90-%EB%8C%80%ED%95%B4-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90
 
@@ -138,7 +144,8 @@ https://oblador.github.io/react-native-vector-icons/ 링크참고해서 사용�
 
 `{ cancelable: true, onDismiss: () => { console.log('hello'); } `는 안드로이드에서 뒤로가기나 박스 바깥 영역을 터치했을때만 작동하는 코드.
 
-**AsyncStorage**
+## AsyncStorage
+
 `yarn add @react-native-community/async-storage`
 웹의 로컬스토리지 역할.
 
@@ -160,7 +167,7 @@ useEffect(() => {
 
 # 0225
 
-react-navigation 적용
+## react-navigation 적용
 
 ```
   cd LearnReactNavigation && yarn add @react-navigation/native
@@ -181,6 +188,19 @@ export default App;
 ```
 
 `navigation.navigate('Detail')` 또는 `navigation.push('Detail')` 키워드를 통해 이동할 수 있다.
+이 둘의 차이점은
+`navigate()`는 새로 이동할 화면이 현재 화면과 같으면 새로운 화면을 쌓지 않고 파라미터만 변경.
+`push()`는 새로 이동할 화면이 현재화면과 같으면 새로운 화면을 쌓는다. (즉, 뒤로가기하면 같은 페이지 다른 파라미터)
+
+> 참고로 navigate 함수는 지금 사용하고 있는 네이티브 스택 내비게이터 외에 다른 내비게이터(추후 배울 것입니다)에도 있지만, push 함수는 네이티브 스택 내비게이터에서만 사용 가능합니다.
+
+### 뒤로가기
+
+`navigation.pop()`는 뒤로가기.
+`navgiation.popToTop()`는 가장 첫 번째 화면으로 이동.
+
+### 파라미터
+
 파라미터도 넘겨주려면 `('Detail', {id: 1})` 이런식으로 객체타입을 넘겨줄 수 있다.
 이동한 페이지에서 값을 받으려면 `({route})` 로 받고, `route.params.(받은 값)`로 출력해줘야한다.
 단순히 `(data)`로 받고 `data`를 출력하면,
@@ -202,3 +222,109 @@ export default App;
 이런 값이 나온다.
 
 아니면 간단하게 받을 때부터 `({route: {params}})`로 받고 `params.(받은 값)`로 출력해도 좋다.
+
+### 헤더 커스터마이징
+
+#### 타이틀 텍스트 변경하기
+
+기본적으론 컴포넌트 이름자체가 헤더가 된다.
+이를 수정하기위해선 `Stack.Screen`의 Props를 조절해준다.
+
+```js
+<Stack.Screen
+    name="Home"
+    component={HomeScreen}
+    options={{
+        title: "홈",
+    }}
+/>
+```
+
+또는, 페이지 자체에서 useEffect를 통해 설정할 수도 있다.
+
+```js
+useEffect(() => {
+    navigation.setOptions({ title: "홈" });
+}, [navigation]);
+```
+
+App 컴포넌트에서 Props로 설정할 때 파라미터를 조회하려면 객체가 아닌 객체를 반환하는 함수를 넣어줘야 합니다. 그리고 이 함수는 route와 navigation을 파라미터로 받아올 수 있습니다.
+
+```js
+ options={({route}) => ({
+           title: `상세 정보 - ${route.params.id}`,
+         })}
+```
+
+> 화살표 함수를 호출할 때 바로 반환하는 경우에는 중괄호와 return을 생략할 수 있는데요.
+> // const add = (a, b) => { return a + b };
+> const add = (a, b) => a + b;
+> 만약 바로 반환하는 값이 객체 타입이라면 객체를 소괄호로 감싸줘야 합니다.
+> // const createObject = (a, b) => { return {a, b}; };
+> const createObject = (a, b) => ({a, b})
+> 소괄호로 감싸지 않으면 객체로 인식하지 않고 코드 블록으로 이해하기 때문에 오류가 발생합니다.
+
+추가적인 옵션들.
+
+```js
+ options={{
+            title: '홈',
+            // Header 블록에 대한 스타일
+            headerStyle: {
+              backgroundColor: '#29b6f6',
+            },
+            // Header의 텍스트, 버튼들 색상
+            headerTintColor: '#ffffff',
+            // 타이틀 텍스트의 스타일
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 20,
+            },
+          }}
+```
+
+```js
+options={{
+            headerBackVisible: false,
+            // headerBackVisible은 안드로이드에서만 적용됨.
+            // headerLeft를 설정하면 iOS에서는 뒤로가기 버튼이 알아서 사라지지만 안드로이드는 위의 코드가 필요.
+            headerLeft: ({onPress}) => (
+              <TouchableOpacity onPress={onPress}>
+                <Text>Left</Text>
+              </TouchableOpacity>
+            ),
+            headerTitle: ({children}) => (
+                // {children}은 현재화면 타이틀을 뜻함.
+              <View>
+                <Text>{children}</Text>
+              </View>
+            ),
+            headerRight: () => (
+              <View>
+                <Text>Right</Text>
+              </View>
+            ),
+          }}
+```
+
+헤더를 없애고 싶을 때. (페이지 내애서 뒤로가는 기능을 구현해야함.)
+
+```js
+ options={{
+            headerShown: false,
+          }}
+```
+
+한 페이지에만 말고 네이티브 스택 네비게이터에서 관리하는 모든 페이지에 옵션을 넣고싶다면.
+
+```js
+<Stack.Navigator
+  initialRouteName="Home"
+  screenOptions={{
+    headerShown: false,
+  }}>
+```
+
+이런식으로 설정할 수 있다.
+
+더많은 헤더 옵션은 • https://reactnavigation.org/docs/native-stack-navigator#options 참고.

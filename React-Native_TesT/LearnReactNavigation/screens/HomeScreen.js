@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Button} from 'react-native';
 
 function HomeScreen({navigation}) {
+  useEffect(() => {
+    navigation.setOptions({title: '홈Home홈'});
+  }, []);
   return (
     <View>
       <Button
@@ -15,6 +18,10 @@ function HomeScreen({navigation}) {
       <Button
         title="Detail 3 열기"
         onPress={() => navigation.push('Detail', {id: 3})}
+      />
+      <Button
+        title="Headerless 열기"
+        onPress={() => navigation.push('Headerless')}
       />
     </View>
   );
