@@ -7,7 +7,7 @@ statusBar에 원하는 색상 지정하기.
 <StatusBar backgroundColor="#26a69a" />
 ```
 
-IOS는
+iOS는
 
 ```js
 <SafeAreaProvider>
@@ -16,7 +16,7 @@ IOS는
       ...
 ```
 
-여기서 IOS나 안드로이드 각 상태바 내용 색상을 변경하려면 barStyle의 설정을 조율해주면 된다.
+여기서 iOS나 안드로이드 각 상태바 내용 색상을 변경하려면 barStyle의 설정을 조율해주면 된다.
 
 ```
 <StatusBar backgroundColor="#26a69a" barStyle="light-content" />
@@ -26,7 +26,7 @@ IOS는
 
 # 0224
 
-IOS 디바이스 리스트확인 `xcrun simctl list devices`
+iOS 디바이스 리스트확인 `xcrun simctl list devices`
 
 디바이스 지정 run `yarn react-native run-ios --simulator="iPhone 5s"`
 
@@ -56,7 +56,7 @@ resizeMode는 총 5가지 값으로 설정할 수 있습니다.
 기본 배경을 지정하는 스타일시트에 하단 코드를 추가하는 것이 좋음.
 ` backgroundColor: 'white',`
 
-키보드가 필요한 상황에서 안드로이드는 화면이 줄어들면서 Input태그가 있는 부분이 상단으로 올라오지만, IOS는 화면 하단이 그냥 키보드에 가려진다. 이를 해결하기 위해서는 `KeyboardAvoidingView`를 이용해야한다.
+키보드가 필요한 상황에서 안드로이드는 화면이 줄어들면서 Input태그가 있는 부분이 상단으로 올라오지만, iOS는 화면 하단이 그냥 키보드에 가려진다. 이를 해결하기 위해서는 `KeyboardAvoidingView`를 이용해야한다.
 
 `<KeyboardAvoidingView behavior={Platform.select({ios: 'padding'})} style={styles.avoid}>`
 이 코드를 최상위 컴포넌트 SafeAreaView바로 하단에 넣어준다.
@@ -77,7 +77,7 @@ resizeMode는 총 5가지 값으로 설정할 수 있습니다.
 
 `onSubmitEditing`은 Enter를 눌렀을 때 호출되는 함수이다.
 
-`returnKeyType`은 IOS에서 엔터부분 설명타입을 변경해주는 역할.
+`returnKeyType`은 iOS에서 엔터부분 설명타입을 변경해주는 역할.
 "done"으로 설정하면 완료 라고 표시된다.
 더 다양한 타입은 https://reactnative.dev/docs/textinput 참고.
 
@@ -99,7 +99,33 @@ resizeMode는 총 5가지 값으로 설정할 수 있습니다.
 `data`, `render`, `keyExtractor` 필수.
 https://velog.io/@djaxornwkd12/React-Native-FlatList%EC%97%90-%EB%8C%80%ED%95%B4-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90
 
-앱에 react-native-vector-icons 인스톨하고 IOS, 안드로이드 세팅하기.
+앱에 react-native-vector-icons 인스톨하고 iOS, 안드로이드 세팅하기.
 https://thebook.io/080236/ch04/05/01/
 
 https://oblador.github.io/react-native-vector-icons/ 링크참고해서 사용할 브랜드를 임포트해야한다.
+
+`Alert.alert`의 style는 iOS에만 적용됨.
+
+`{ cancelable: true, onDismiss: () => { console.log('hello'); } `는 안드로이드에서 뒤로가기나 박스 바깥 영역을 터치했을때만 작동하는 코드.
+
+**AsyncStorage**
+`yarn add @react-native-community/async-storage`
+웹의 로컬스토리지 역할.
+
+여기에 문자열만 넣을 수 있다.
+`JSON.stringify(value)`를 이용해 값을 저장하고,
+`JSON.parse(value)`를 통해 다시 JSON으로 변환한다.
+
+AsyncStorage와 useEffect사용할 때 순서도 중요. 불러오기 뒤에 저장이 있어야함.
+
+```
+useEffect(() => {
+    todosStorage.get().then(setTodos).catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    todosStorage.set(todos).catch(console.error);
+  }, [todos]);
+```
+
+# 0225
