@@ -329,14 +329,14 @@ options={{
 
 더많은 헤더 옵션은 • https://reactnavigation.org/docs/native-stack-navigator#options 참고.
 
-## 하단 탭 내비게이터
+### 하단 탭 내비게이터
 
 **아이콘 설정법** https://thebook.io/080236/ch05/03/02-02/
 
 `Tab.Screen` 의 `options`을 통해 개별적으로 설정을 변경할 수 있고,
 전반적인 설정은 `Tab.Navigator`의 `tabBarOptions`에서 할 수 있다.
 
-## 네이티브 스택 내비게이터와 하단 탭 내비게이터를 함께 사용하기
+### 네이티브 스택 내비게이터와 하단 탭 내비게이터를 함께 사용하기
 
 이러한 구조로 구성.
 
@@ -352,7 +352,7 @@ options={{
 
 > 네이티브 스택 내비게이터에서 MainScreen의 화면을 설정할 때, options에 headerShown 값을 false로 해주었는데요. 만약 이 값을 설정하지 않는다면 두 개의 헤더가 나타나는 문제가 발생하므로, 하단 탭 내비게이터를 네이티브 스택 내비게이터 내부에서 사용하게 될 때 이 설정을 해주는 것이 중요합니다.
 
-## 머티리얼 상단 탭 내비게이터
+### 머티리얼 상단 탭 내비게이터
 
 하단 탭과 거의 유사. 대신 탭이 위에 있음.
 
@@ -366,8 +366,55 @@ yarn add @react-navigation/material-top-tabs react-native-tab-view react-native-
 
 > 일반적으로는 네이티브 스택 내비게이터와 하단 탭 내비게이터를 조합해 많이 사용합니다
 
+### useNavigation
+
+`useNavigation Hook`을 사용하면, navigation을 귀찮게 Props로 넘겨주지 않고 이용이 가능하다.
+
+### useRoute
+
+Screen이 아닌 컴포넌트에서 route 객체를 사용할 수 있게 합니다.
+
+```js
+function OpenDetailButton() {
+    const navigation = useNavigation();
+
+    return (
+        <Button
+            title="Detail 1 열기"
+            onPress={() => navigation.push("Detail", { id: 1 })}
+        />
+    );
+}
+```
+
+# 0227
+
+### useFocusEffect
+
+useFocusEffect는 화면에 포커스가 잡혔을 때 특정 작업을 할 수 있게 하는 Hook입니다. 만약 HomeScreen에서 DetailScreen을 띄운다면 HomeScreen이 화면에서 사라지는 게 아니라, HomeScreen 위에 DetailScreen을 쌓아서 보여주는 것입니다.
+그래서 useEffect Hook을 쓴다면 컴포넌트가 마운트되거나 언마운트될 케이스가 우리의 예상과 다를 것이다. --> **useEffect는 우리가 원하는 흐름으로 사용할 수 없다.**
+<br>
+
+**useFocusEffect는 꼭 useCallback과 같이 사용해야 합니다. 만약 useCallback을 사용하지 않으면 컴포넌트가 리렌더링될 때마다 useFocusEffect에 등록한 함수가 호출될 것입니다.**
+**useCallback은 컴포넌트 내부에서 함수를 만들 때, 새로 만든 함수를 사용하지 않고 이전에 만든 함수를 다시 사용하도록 만들어줍니다. 그리고 그 함수 내부의 로직에서 의존하는 값이 있다면 의존하는 값이 바뀌었을 때 함수를 교체할 수 있도록 해줍니다.**
+
+```js
+useFocusEffect(
+    useCallback(() => {
+        console.log("이 화면을 보고 있어요.");
+        return () => {
+            console.log("다른 화면으로 넘어갔어요.");
+        };
+    }, []),
+);
+```
+
 ## 에러 모음집
 
 > `error Couldn't find "PLATFORM_NAME" variable in xcodebuild output. Please report this issue and run your project with Xcode instead.` > <br> `cd ios && pod install cd ..` 진행.
 
 > `rncviewpager was not found in the uimanager` >`yarn ios && yarn android`로 새로 빌드하기.
+
+## 해보고싶다..
+
+https://velog.io/@minkyeong-ko/React-Native-%EC%98%A4%EB%A5%B8%EC%AA%BD-%EC%8A%A4%EC%99%80%EC%9D%B4%ED%94%84-%EC%8B%9C-%ED%85%8D%EC%8A%A4%ED%8A%B8-%EB%B3%B4%EC%97%AC%EC%A3%BC%EA%B8%B0Swipeable
