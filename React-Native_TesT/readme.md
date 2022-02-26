@@ -328,3 +328,29 @@ options={{
 이런식으로 설정할 수 있다.
 
 더많은 헤더 옵션은 • https://reactnavigation.org/docs/native-stack-navigator#options 참고.
+
+## 하단 탭 내비게이터
+
+**아이콘 설정법** https://thebook.io/080236/ch05/03/02-02/
+
+`Tab.Screen` 의 `options`을 통해 개별적으로 설정을 변경할 수 있고,
+전반적인 설정은 `Tab.Navigator`의 `tabBarOptions`에서 할 수 있다.
+
+## 네이티브 스택 내비게이터와 하단 탭 내비게이터를 함께 사용하기
+
+이러한 구조로 구성.
+
+```
+• Stack.Navigator
+  - Main (Tab.Navigator)
+    • Home
+    • Search
+    • Notification
+    • Message
+  - Detail
+```
+
+## 에러 모음집
+
+> error Couldn't find "PLATFORM_NAME" variable in xcodebuild output. Please report this issue and run your project with Xcode instead.
+> <br> `cd ios && pod install cd ..` 진행.
