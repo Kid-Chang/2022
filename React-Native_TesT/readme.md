@@ -350,7 +350,24 @@ options={{
   - Detail
 ```
 
+> 네이티브 스택 내비게이터에서 MainScreen의 화면을 설정할 때, options에 headerShown 값을 false로 해주었는데요. 만약 이 값을 설정하지 않는다면 두 개의 헤더가 나타나는 문제가 발생하므로, 하단 탭 내비게이터를 네이티브 스택 내비게이터 내부에서 사용하게 될 때 이 설정을 해주는 것이 중요합니다.
+
+## 머티리얼 상단 탭 내비게이터
+
+하단 탭과 거의 유사. 대신 탭이 위에 있음.
+
+```
+yarn add @react-navigation/material-top-tabs react-native-tab-view react-native-pager-view
+```
+
+다양한 옵션은 https://thebook.io/080236/ch05/03/03-03/ 참고
+
+또한 다른 내비게이터도 책 참고.
+
+> 일반적으로는 네이티브 스택 내비게이터와 하단 탭 내비게이터를 조합해 많이 사용합니다
+
 ## 에러 모음집
 
-> error Couldn't find "PLATFORM_NAME" variable in xcodebuild output. Please report this issue and run your project with Xcode instead.
-> <br> `cd ios && pod install cd ..` 진행.
+> `error Couldn't find "PLATFORM_NAME" variable in xcodebuild output. Please report this issue and run your project with Xcode instead.` > <br> `cd ios && pod install cd ..` 진행.
+
+> `rncviewpager was not found in the uimanager` >`yarn ios && yarn android`로 새로 빌드하기.
