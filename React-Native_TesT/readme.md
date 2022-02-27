@@ -387,8 +387,6 @@ function OpenDetailButton() {
 }
 ```
 
-# 0227
-
 ### useFocusEffect
 
 useFocusEffect는 화면에 포커스가 잡혔을 때 특정 작업을 할 수 있게 하는 Hook입니다. 만약 HomeScreen에서 DetailScreen을 띄운다면 HomeScreen이 화면에서 사라지는 게 아니라, HomeScreen 위에 DetailScreen을 쌓아서 보여주는 것입니다.
@@ -408,6 +406,82 @@ useFocusEffect(
     }, []),
 );
 ```
+
+# 0227
+
+## DayLog 앱.
+
+> **pod install** 원래는 `cd ios && pod install` 을 이용했지만 **`npx pod-install`**을 이용하면 프로젝트 루트 디렉토리에서도 가능하다.
+
+![](https://thebook.io/img/080236/288.jpg)
+
+> 내비게이션 전용 컴포넌트와 일반 화면을 구분하기 위해 이름에 규칙을 사용할 것입니다. 내비게이션 전용 컴포넌트에는 MainTab과 RootStack처럼 이름 뒤에 Tab이나 Stack을 넣는 것이 좋다.
+
+## Context API
+
+```js
+import { createContext } from "react";
+
+const LogContext = createContext("안녕하세요");
+
+export default LogContext;
+```
+
+새로운 Context를 만들 때는 createContext 함수를 사용합니다. 이렇게 Context를 만들면 LogContext.Provider라는 컴포넌트와 LogContext.Consumer라는 컴포넌트가 만들어집니다. Provider는 Context 안에 있는 값을 사용할 컴포넌트들을 감싸주는 용도로 사용합니다. 현재 프로젝트로 예를 들면 RootStack 컴포넌트나 App 컴포넌트 내부에서 내용을 감싸주면 됩니다.
+
+Provider에는 value라는 Props를 설정할 수 있는데요. 이 값이 바로 Context를 통해 여러 컴포넌트에서 공유할 수 있는 값입니다.
+
+가장 상위 컴포넌트에서 `<LogContext.Provider value="안녕하세요"></LogContext.Provider>`로 감싸주고, 값제공이 필요한 부분에서 ` <LogContext.Consumer> {(value) => <Text>{value}</Text>} </LogContext.Consumer>` 이런식으로 출력하면 된다.
+
+Render Props를 사용하면 반대로 우리가 사용할 컴포넌트에서 특정 값을 밖으로 빼내와 사용할 수가 있습니다.
+**오.. 이 내용 보면서 함수형 컴포넌트라는게 조금더 느껴진다.**
+**근데, 이방식 현재는 잘 안쓰긴 함. 이해용으로만.....**
+
+```js
+function FeedsScreen() {
+    return (
+        <View style={styles.block}>
+            <Box>{(value) => <Text>{value}</Text>}</Box>
+        </View>
+    );
+}
+
+function Box({ children }) {
+    return <View style={styles.box}>{children("Hello World")}</View>;
+}
+```
+
+#### 여기서 이해한거 스스로 설명.
+
+일단 Box가 함수형 컴포넌트이고, 이를 `<Box>`로 호출했다. 그럼 이때 Props를 전달하는 방법이 2가지인데, `<>` 내부에서 보내는 것과 `<></>`사이에 보내는 것.
+
+```js
+<Box boxx={<Text>helllllo</Text>}>
+    <Text>1</Text>
+</Box>
+```
+
+하고 로그를 찍으면 `{boxx: {…}, children: {…}}`라고 출력된다. children에는 `<></>`사이의 내용들이 출력된다.
+
+## children Props
+
+```js
+<Box>
+    <Text>1</Text>
+</Box>;
+
+function Box({ children }) {
+    return <View style={styles.box}>{children}</View>;
+}
+```
+
+여기에 Box({children})의 `children`에 `<Text>1</Text>`가 들어간다.
+
+## useContext Hook
+
+이 Hook을 사용하면 Context의 값을 훨씬 간결하게 사용할 수 있다.
+
+> App 컴포넌트에서 useState를 사용해 관리하는 상태를 Provider로 넣어주면 값이 바뀔 때 useContext를 사용하는 컴포넌트 쪽에서도 리렌더링이 잘 발생할 것입니다. Provider를 사용하는 컴포넌트에서 Context의 상태를 관리하는 것보다는 Provider 전용 컴포넌트를 따로 만드는 것이 유지보수성이 더 높습니다. 특히 Context에서 다루는 로직이 복잡할 때는 전용 컴포넌트를 만드는 것이 좋습니다.
 
 ## 에러 모음집
 
