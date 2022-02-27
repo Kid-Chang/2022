@@ -483,6 +483,16 @@ function Box({ children }) {
 
 > App 컴포넌트에서 useState를 사용해 관리하는 상태를 Provider로 넣어주면 값이 바뀔 때 useContext를 사용하는 컴포넌트 쪽에서도 리렌더링이 잘 발생할 것입니다. Provider를 사용하는 컴포넌트에서 Context의 상태를 관리하는 것보다는 Provider 전용 컴포넌트를 따로 만드는 것이 유지보수성이 더 높습니다. 특히 Context에서 다루는 로직이 복잡할 때는 전용 컴포넌트를 만드는 것이 좋습니다.
 
+## uuid 사용
+
+```
+yarn add uuid
+yarn add react-native-get-random-values
+npx pod-install
+```
+
+uuid는 Node.js의 crypto기능을 사용하지만, RN의 경우 이 기능이 내장되어있지않아서 random-values 기능을 따로 인스톨 해준다.
+
 ## 에러 모음집
 
 > `error Couldn't find "PLATFORM_NAME" variable in xcodebuild output. Please report this issue and run your project with Xcode instead.` > <br> `cd ios && pod install cd ..` 진행.
