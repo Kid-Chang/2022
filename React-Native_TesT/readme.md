@@ -493,6 +493,76 @@ npx pod-install
 
 uuid는 Node.js의 crypto기능을 사용하지만, RN의 경우 이 기능이 내장되어있지않아서 random-values 기능을 따로 인스톨 해준다.
 
+## date-fns
+
+```
+• 방금 전
+• 3분 전
+• 1시간 전
+• 3일 전
+• 2021년 8월 23일 07:00
+```
+
+같은 기능을 구현하기 위해
+`yarn add date-fns` 설치
+
+```js
+function formatDate(date) {
+    const d = new Date(date);
+    const now = Date.now();
+    const diff = (now - d.getTime()) / 1000;
+
+    if (diff < 60 * 1) {
+        return "방금 전";
+    }
+    if (diff < 60 * 60 * 24 * 3) {
+        return formatDistanceToNow(d, { addSuffix: true, locale: ko });
+    }
+    return format(d, "PPP EEE p", { locale: ko });
+}
+```
+
+`<Text style={styles.date}>{formatDate(date)}</Text>`
+자세한건 https://thebook.io/080236/ch06/04/03-02/ 참고.
+
+## Animated 이용.
+
+```js
+import React, {useRef} from 'react';
+import {Animated} from 'react-native'
+
+function Sample() {
+  const animation = useRef(new Animated.Value(1)).current;
+}
+
+(...)
+
+<Animated.View style={{opacity: animation}}></Animated.View>
+```
+
+컴포넌트의 레퍼런스를 선택할 때 useRef를 사용했는데, 레퍼런스 선택 외에 특정 값을 컴포넌트 생성 시에 설정하고, 컴포넌트가 사라질 때까지 재사용하고 싶은 경우에도 이와 같이 useRef를 사용해 구현할 수 있답니다.
+
+```js
+const animValue = new Animated.Value(0); // 재 랜더링 시 마다 생성
+const animValue2 = useRef(new Animated.Value(0)).current; // 최초 랜더링 시 생성
+```
+
+```js
+Animated.timing(animation, {
+    toValue: 0, // 어떤 값으로 변경할지 - 필수
+    duration: 1000, // 애니메이션에 걸리는 시간(밀리세컨드) - 기본값: 500
+    delay: 0, // 딜레이 이후 애니메이션 시작 - 기본값: 0
+    useNativeDriver: true, // 네이티브 드라이버 사용 여부 - 필수
+    isInteraction: true, // 사용자 인터랙션에 의해 시작한 애니메이션인지 지정 - 기본값: true
+    // 애니메이션 속도 변경 함수 - 기본값: Easing.inOut(Easing.ease)
+    easing: Easing.inOut(Easing.ease),
+}).start(() => {
+    // 애니메이션 처리 완료 후 실행할 작업
+});
+```
+
+> 여기서 toValue, useNativeDriver 값은 필수로 지정해야 합니다. useNativeDriver는 애니메이션 처리 작업을 자바스크립트 엔진이 아닌 네이티브 레벨에서 진행하게 하는 옵션으로 transform, opacity처럼 레이아웃과 관련없는 스타일에만 적용할 수 있습니다. 예를 들어 레이아웃에 영향을 끼치는 left, width, paddingLeft, marginLeft와 같은 스타일에는 꼭 useNativeDriver를 false로 지정해야 합니다.
+
 ## 에러 모음집
 
 > `error Couldn't find "PLATFORM_NAME" variable in xcodebuild output. Please report this issue and run your project with Xcode instead.` > <br> `cd ios && pod install cd ..` 진행.
@@ -502,3 +572,7 @@ uuid는 Node.js의 crypto기능을 사용하지만, RN의 경우 이 기능이 �
 ## 해보고싶다..
 
 https://velog.io/@minkyeong-ko/React-Native-%EC%98%A4%EB%A5%B8%EC%AA%BD-%EC%8A%A4%EC%99%80%EC%9D%B4%ED%94%84-%EC%8B%9C-%ED%85%8D%EC%8A%A4%ED%8A%B8-%EB%B3%B4%EC%97%AC%EC%A3%BC%EA%B8%B0Swipeable
+
+```
+
+```
