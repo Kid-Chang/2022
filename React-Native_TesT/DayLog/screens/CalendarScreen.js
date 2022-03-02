@@ -1,8 +1,15 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Animated, Button, StyleSheet, View} from 'react-native';
 
 function FadeInAndOut() {
-  const animation = useRef(new Animated.Value(0)).current;
+  const animation = useRef(new Animated.Value(1)).current;
+  const [hidden, setHidden] = useState(false);
+  useEffect(() => {
+    Animated.timing(animation, {
+      toValue: hidden ? 0 : 1,
+      useNativeDriver: true,
+    }).start();
+  }, [hidden, animation]);
 
   return (
     <View>
@@ -15,21 +22,9 @@ function FadeInAndOut() {
         ]}
       />
       <Button
-        title="FadeIn"
+        title="Toggle"
         onPress={() => {
-          Animated.timing(animation, {
-            toValue: 1,
-            useNativeDriver: true,
-          }).start();
-        }}
-      />
-      <Button
-        title="FadeOut"
-        onPress={() => {
-          Animated.timing(animation, {
-            toValue: 0,
-            useNativeDriver: true,
-          }).start();
+          setHidden(!hidden);
         }}
       />
     </View>
